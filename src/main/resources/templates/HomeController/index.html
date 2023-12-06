@@ -1,0 +1,168 @@
+<!-- FILEPATH: /home/gustavo/Documentos/PlanejamentoDeCronograma/schedule-planning-bio-inspired/src/main/resources/templates/HomeController/index.html -->
+<!-- BEGIN: abpxx6d04wxr -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Task scheduler</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4 mt-2">
+                <div class="hero-section">
+                    <h1 class="display-4">Bem vindo Task Scheduler Power 4.0</h1>
+                    <p class="lead">Aqui vai uma descrição muito maneira do objetivo do projeto</p>
+                </div>
+            </div>
+            <div class="col-md-8 row">
+                <div class="col-md-3">
+                
+                <form>
+                    <div class="mb-3">
+                        <label for="taskName" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="taskName" placeholder="Enter task name">
+                    </div>
+                    <div class=" mb-3">
+                        <label for="startDate" class="form-label">Tempo (Minutos)</label>
+                        <input type="number" class="form-control" id="startDate">
+                    </div>
+                    <div class=" mb-3">
+                        <label for="endDate" class="form-label">Dificuldade</label>
+                        <input type="number" class="form-control" id="endDate">
+                    </div>
+                    <a style="cursor:pointer" class="small-link" id="random-task"><small>Gerar tarefa aleatória</small></a>
+                    <div id="add-button" class="btn btn-primary mb-3 mt-1">Adicionar tarefa</div>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <table id="table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tempo</th>
+                            <th>Dificuldade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="">
+                    <a id="go-to-result" class="btn btn-primary mt-3">Priorizar</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+        function addTask() {
+            // Get the input values
+            var taskName = document.getElementById("taskName").value;
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            // Check if the input fields are not empty
+            if (taskName !== "" && startDate !== "" && endDate !== "") {
+                // Create a new table row
+                var newRow = document.createElement("tr");
+
+                // Create table data cells for the task details
+                var taskNameCell = document.createElement("td");
+                taskNameCell.textContent = taskName;
+                var startDateCell = document.createElement("td");
+                startDateCell.textContent = startDate;
+                var endDateCell = document.createElement("td");
+                endDateCell.textContent = endDate;
+
+                // Append the table data cells to the new row
+                newRow.appendChild(taskNameCell);
+                newRow.appendChild(startDateCell);
+                newRow.appendChild(endDateCell);
+
+                // Append the new row to the table body
+                var tableBody = document.querySelector("tbody");
+                tableBody.appendChild(newRow);
+
+                // Clear the input fields
+                document.getElementById("taskName").value = "";
+                document.getElementById("startDate").value = "";
+                document.getElementById("endDate").value = "";
+            }
+        }
+
+        function generateRandomTask() {
+            // Generate a random task name
+            var taskName = "Task " + Math.floor(Math.random() * 1000);
+
+            // Generate random start and end dates
+            var startDate = Math.floor(Math.random() * 60);
+            var endDate = Math.floor(Math.random() * 10);
+
+            // Create a new table row
+            var newRow = document.createElement("tr");
+
+            // Create table data cells for the task details
+            var taskNameCell = document.createElement("td");
+            taskNameCell.textContent = taskName;
+            var startDateCell = document.createElement("td");
+            startDateCell.textContent = startDate;
+            var endDateCell = document.createElement("td");
+            endDateCell.textContent = endDate;
+
+            // Append the table data cells to the new row
+            newRow.appendChild(taskNameCell);
+            newRow.appendChild(startDateCell);
+            newRow.appendChild(endDateCell);
+
+            // Append the new row to the table body
+            var tableBody = document.querySelector("tbody");
+            tableBody.appendChild(newRow);
+        }
+
+        // Add event listener to the "Add Task" button
+        var addButton = document.getElementById("add-button")
+        addButton.addEventListener("click", addTask);
+
+        // Add event listener to the "Generate Random Task" link
+        var randomTaskLink = document.getElementById("random-task");
+        randomTaskLink.addEventListener("click", generateRandomTask);
+        
+        function getTasks() {
+            var tasks = [];
+            var table = document.getElementById("table");
+            var rows = table.getElementsByTagName("tr");
+            for (var i = 1; i < rows.length; i++) {
+                var currentRow = rows[i];
+                var cells = currentRow.getElementsByTagName("td");
+                var task = {
+                    nome: cells[0].innerHTML,
+                    tempo: cells[1].innerHTML,
+                    dificuldade: cells[2].innerHTML
+                }
+                tasks.push(task);
+            }
+            return tasks;
+        }
+        function createaVirtualFormAndWithActionToResultPage() {
+            var form = document.createElement('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/home/result');
+
+            var hiddenField = document.createElement('input');
+            hiddenField.setAttribute('type', 'hidden');
+            hiddenField.setAttribute('name', 'tasks');
+            hiddenField.setAttribute('value', JSON.stringify(getTasks()));
+
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+        var goToResult = document.getElementById("go-to-result");
+        goToResult.addEventListener("click", createaVirtualFormAndWithActionToResultPage);
+
+    </script>
+</html>

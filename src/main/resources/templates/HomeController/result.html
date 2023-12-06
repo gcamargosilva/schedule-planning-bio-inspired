@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .loading-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            transition: all .5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner-border" role="status"></div>
+        <div class="loading-text">Arrumando tudo...</div>
+        <div style="display:none" class="loading-text">Aguarde um momento</div>
+        <div style="display:none" class="loading-text">Sua pagina</div>
+    </div>
+    <div id="loaded-page" style="display:none" class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4 mt-2">
+                <div class="hero-section">
+                    <h1 class="display-4">Bem vindo Task Scheduler Power 4.0</h1>
+                    <p class="lead">Aqui o resultado das melhores tarefas após 5 evoluções</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <table id="table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tempo</th>
+                            <th>Dificuldade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#for tarefa in tarefas}
+                        <tr>
+                            <td>{tarefa.nome}</td>
+                            <td>{tarefa.tempo}</td>
+                            <td>{tarefa.dificuldade}</td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+                <div class="">
+                    <a id="go-to-result" class="btn btn-primary mt-3">Priorizar</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    setTimeout(function() {
+        var loadingTexts = document.querySelectorAll('.loading-text');
+        var index = 0;
+        var interval = setInterval(function() {
+            loadingTexts[index].style.display = 'block';
+            if(index > 0) {
+                loadingTexts[index - 1].style.display = 'none';
+            }
+            index++;
+            if (index >= loadingTexts.length) {
+                clearInterval(interval);
+                document.querySelector('.loading-container').style.display = 'none';
+                document.querySelector('#loaded-page').style.display = 'block';
+            }
+        }, 800);
+    }, 0);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</html>
