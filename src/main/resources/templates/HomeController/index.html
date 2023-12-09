@@ -13,13 +13,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8 mb-4 mt-2">
                 <div class="hero-section">
-                    <h1 class="display-4">Bem vindo Task Scheduler Power 4.0</h1>
-                    <p class="lead">Aqui vai uma descrição muito maneira do objetivo do projeto</p>
+                    <h1 class="display-4">Planejamento de Cronograma</h1>
+                    <p class="lead">Projeto de planejamento de cronograma que utiliza algoritmos genéticos para otimização eficiente de prioridade e tempo.
+                        (Por uma questão de performance apenas 5 geracoes são executadas)
+                    </p>
                 </div>
             </div>
             <div class="col-md-8 row">
-                <div class="col-md-3">
-                
+                <div class="col-md-3">  
                 <form>
                     <div class="mb-3">
                         <label for="taskName" class="form-label">Nome</label>
@@ -49,12 +50,26 @@
                     <tbody>
                     </tbody>
                 </table>
-                <div class="">
-                    <a id="go-to-result" class="btn btn-primary mt-3">Priorizar</a>
+            </div>
+            <div class="col-md-8 ">
+                <form>
+                    <div class="row">
+                    <div class="col mb-3">
+                        <label for="mutation" class="form-label">Taxa de mutação</label>
+                        <input type="number" value="0.3" class="form-control" id="mutation" placeholder="Enter task name">
+                    </div>
+                    <div class="col mb-3">
+                        <label for="crossover" class="form-label">Taxa de Cruzamento</label>
+                        <input type="number" value="0.8" class="form-control" id="crossover">
+                    </div>
                 </div>
+                </form>
+                <div class="">
+                    <a id="go-to-result" class="btn btn-primary mt-3">Executar</a>
                 </div>
             </div>
         </div>
+
     </div>
 </body>
 <script>
@@ -147,6 +162,15 @@
             return tasks;
         }
         function createaVirtualFormAndWithActionToResultPage() {
+            if (getTasks().length < 4) {
+                alert("É necessário ter pelo menos 4 tarefas para executar o algoritmo, você pode gerar tarefas aleatórias.");
+                return;
+            }
+            payload = {
+                mutation: parseInt(document.getElementById("mutation").value),
+                crossover: parseInt(document.getElementById("crossover").value),
+                tasks: getTasks()
+            }
             var form = document.createElement('form');
             form.setAttribute('method', 'post');
             form.setAttribute('action', '/home/result');
@@ -154,7 +178,7 @@
             var hiddenField = document.createElement('input');
             hiddenField.setAttribute('type', 'hidden');
             hiddenField.setAttribute('name', 'tasks');
-            hiddenField.setAttribute('value', JSON.stringify(getTasks()));
+            hiddenField.setAttribute('value', JSON.stringify(payload));
 
             form.appendChild(hiddenField);
 

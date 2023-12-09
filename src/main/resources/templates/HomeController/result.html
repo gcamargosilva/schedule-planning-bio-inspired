@@ -36,11 +36,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8 mb-4 mt-2">
                 <div class="hero-section">
-                    <h1 class="display-4">Bem vindo Task Scheduler Power 4.0</h1>
-                    <p class="lead">Aqui o resultado das melhores tarefas após 5 evoluções</p>
+                    <h1 class="display-4">Planejamento de Cronograma</h1>
+                    <p class="lead">Projeto de planejamento de cronograma que utiliza algoritmos genéticos para otimização eficiente de prioridade e tempo.</p>
                 </div>
             </div>
+            {#for geracao in geracoes}
             <div class="col-md-8">
+                <h3>Geração {geracao_count}</h3>
+                
                 <table id="table" class="table table-bordered">
                     <thead>
                         <tr>
@@ -50,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {#for tarefa in tarefas}
+                        {#for tarefa in geracao}
                         <tr>
                             <td>{tarefa.nome}</td>
                             <td>{tarefa.tempo}</td>
@@ -59,11 +62,10 @@
                     {/for}
                     </tbody>
                 </table>
-                <div class="">
-                    <a id="go-to-result" class="btn btn-primary mt-3">Priorizar</a>
                 </div>
-                </div>
+                {/for}            
             </div>
+
         </div>
     </div>
 </body>

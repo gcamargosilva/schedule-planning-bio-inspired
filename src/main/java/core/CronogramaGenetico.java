@@ -4,10 +4,11 @@ import java.util.*;
 
 public class CronogramaGenetico{
     public List<Tarefa> melhoresTarefas = new ArrayList<>();
+    public List<List<Tarefa>> geracoes = new ArrayList<>();
     private List<Tarefa> tarefas;
     private List<Tarefa> cronogramaAtual;
-    private static double TAXA_MUTACAO = 0.3;
-    private static double TAXA_CRUZAMENTO = 0.8;
+    public static double TAXA_MUTACAO = 0.3;
+    public static double TAXA_CRUZAMENTO = 0.8;
 
     public CronogramaGenetico(List<Tarefa> tarefas) {
         this.tarefas = tarefas;
@@ -153,10 +154,11 @@ public class CronogramaGenetico{
 
     // Função para imprimir as 4 tarefas selecionadas organizadas pelo fitness
     private void imprimirMelhoresTarefas(List<Tarefa> tarefasSelecionadas) {
-        this.melhoresTarefas = tarefasSelecionadas;
         // Organiza as tarefas selecionadas pelo fitness em ordem decrescente
         tarefasSelecionadas.sort(Comparator.<Tarefa>comparingDouble(tarefa -> fitness(Collections.singletonList(tarefa))).reversed());
-
+        this.melhoresTarefas = tarefasSelecionadas;
+        
+        this.geracoes.add(tarefasSelecionadas);
         // Imprime as 4 tarefas selecionadas
         System.out.println("Melhores Tarefas na Geração " + "geracao: " + tarefasSelecionadas.subList(0, 4));
     }
