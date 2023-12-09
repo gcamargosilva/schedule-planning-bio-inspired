@@ -8,6 +8,7 @@ import core.CronogramaGenetico;
 import core.Tarefa;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -23,7 +24,7 @@ class Payload {
     public Number crossover;
 }
 
-@Path("/home")
+@Path("/")
 public class HomeController {
     @CheckedTemplate(requireTypeSafeExpressions = false)
     public static class Templates {
@@ -31,6 +32,7 @@ public class HomeController {
         public static native TemplateInstance result(List<Tarefa> tarefas, List<List<Tarefa>> geracoes);
     }
 
+    
     @GET
     @Produces(MediaType.TEXT_HTML)
     public  TemplateInstance index() {
